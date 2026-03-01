@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CampusConnect — Your gateway to campus events. Discover, create, and register for academic events effortlessly.">
+    <title>CampusConnect — Campus Event Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ── Navbar ── -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">C</span>
+            CampusConnect
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li id="navDashboard" style="display:none"><a href="dashboard.html">Dashboard</a></li>
+            <li id="navLogin"><a href="login.html">Login</a></li>
+            <li id="navRegister"><a href="register.html" class="btn-nav-primary">Sign Up</a></li>
+            <li id="navLogout" style="display:none">
+                <button onclick="logout()" class="btn-nav-primary">Logout</button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ── Main Content ── -->
+    <main class="main-content">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="hero-badge">🎓 The #1 Campus Event Platform</span>
+            <h1>
+                Discover & Join<br>
+                <span class="gradient-text">Campus Events</span>
+            </h1>
+            <p>
+                CampusConnect brings your entire academic community together. Browse upcoming
+                seminars, workshops, hackathons, and cultural programs — and register with a single click.
+                Built for students, faculty, and administrators.
+            </p>
+            <div class="hero-actions">
+                <a href="register.html" class="btn btn-primary" id="heroSignup">🚀 Get Started — It's Free</a>
+                <a href="login.html" class="btn btn-secondary" id="heroLogin">Login to Dashboard</a>
+            </div>
+        </section>
+
+        <!-- Live Stats Section -->
+        <section class="stats-section" id="statsSection">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-number" id="statEvents">0</div>
+                    <div class="stat-label">Total Events</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" id="statUpcoming">0</div>
+                    <div class="stat-label">Upcoming Events</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎟️</div>
+                    <div class="stat-number" id="statRegistrations">0</div>
+                    <div class="stat-label">Registrations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" id="statUsers">0</div>
+                    <div class="stat-label">Community Members</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="section-heading">
+                <h2>How It Works</h2>
+                <p>Three simple steps to get started with CampusConnect</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Create Your Account</h3>
+                    <p>Sign up for free as a Student or Faculty member. It only takes 30 seconds to join the community.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Browse Campus Events</h3>
+                    <p>Explore a rich catalog of upcoming events — from tech workshops and guest lectures to cultural
+                        fests and career fairs.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Register & Participate</h3>
+                    <p>Found something interesting? Register with one click and never miss an event. Get notified and
+                        stay connected.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Preview -->
+        <section class="events-preview">
+            <div class="section-heading">
+                <h2>Upcoming Events</h2>
+                <p>Here's what's happening on campus</p>
+            </div>
+            <div class="events-grid" id="publicEventsGrid">
+                <div class="no-events">
+                    <div class="icon">📭</div>
+                    <p>Loading events...</p>
+                </div>
+            </div>
+            <p class="cta-text">
+                Want to see more? <a href="register.html">Create an account</a> and explore all events on your
+                dashboard.
+            </p>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="section-heading">
+                <h2>Why CampusConnect?</h2>
+                <p>Everything you need to manage campus events in one place</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon purple">📅</div>
+                    <h3>Smart Event Management</h3>
+                    <p>Faculty and admins can create, manage, and track events with detailed descriptions, dates, and
+                        venues.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon green">⚡</div>
+                    <h3>Instant Registration</h3>
+                    <p>Students register for events with a single click. No paperwork, no waiting — instant
+                        confirmation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon orange">🔒</div>
+                    <h3>Secure & Role-Based</h3>
+                    <p>JWT authentication and role-based access ensure that only authorized users can manage events and
+                        view data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon red">📊</div>
+                    <h3>Real-Time Tracking</h3>
+                    <p>View registration counts per event. Admins and faculty see exactly who registered and when.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon blue">📱</div>
+                    <h3>Responsive Design</h3>
+                    <p>Access CampusConnect from any device — desktop, tablet, or mobile. Works beautifully everywhere.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon teal">🤝</div>
+                    <h3>Community Building</h3>
+                    <p>Bring students, faculty, and administration together. Foster engagement and participation across
+                        campus.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>🎓 CampusConnect</h3>
+                    <p>The all-in-one academic campus event and registration portal. Connecting students, faculty, and
+                        administrators through seamless event management.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Sign Up</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Roles</h4>
+                    <ul>
+                        <li><a href="register.html">Student Portal</a></li>
+                        <li><a href="register.html">Faculty Portal</a></li>
+                        <li><a href="login.html">Admin Access</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 CampusConnect. Built with ❤️ for academic communities.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Navigation auth state ──
+        function updateNav() {
+            const token = localStorage.getItem('token');
+            document.getElementById('navDashboard').style.display = token ? '' : 'none';
+            document.getElementById('navLogout').style.display = token ? '' : 'none';
+            document.getElementById('navLogin').style.display = token ? 'none' : '';
+            document.getElementById('navRegister').style.display = token ? 'none' : '';
+
+            if (token) {
+                document.getElementById('heroSignup').textContent = '🚀 Go to Dashboard';
+                document.getElementById('heroSignup').href = 'dashboard.html';
+                document.getElementById('heroLogin').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Mobile toggle
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // ── Load live stats ──
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/events/stats');
+                const data = await res.json();
+                if (res.ok) {
+                    animateNumber('statEvents', data.totalEvents);
+                    animateNumber('statUpcoming', data.upcomingEvents);
+                    animateNumber('statRegistrations', data.totalRegistrations);
+                    animateNumber('statUsers', data.totalUsers);
+                }
+            } catch (e) {
+                // Silently fail — stats are non-critical
+            }
+        }
+
+        function animateNumber(id, target) {
+            const el = document.getElementById(id);
+            const duration = 1200;
+            const start = performance.now();
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                el.textContent = Math.round(eased * target);
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ── Load upcoming events preview ──
+        async function loadPublicEvents() {
+            const grid = document.getElementById('publicEventsGrid');
+            try {
+                const res = await fetch('/api/events');
+                const events = await res.json();
+
+                if (!res.ok || events.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-events">
+                            <div class="icon">📭</div>
+                            <p>No events scheduled yet. Check back soon!</p>
+                        </div>`;
+                    return;
+                }
+
+                // Show only first 3 upcoming events
+                const upcoming = events
+                    .filter(e => new Date(e.date) >= new Date())
+                    .slice(0, 3);
+
+                if (upcoming.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-events">
+                            <div class="icon">📭</div>
+                            <p>No upcoming events right now. Stay tuned!</p>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = upcoming.map(event => `
+                    <div class="event-card">
+                        <h3>${escapeHtml(event.title)}</h3>
+                        <p class="event-desc">${escapeHtml(event.description || 'No description provided.')}</p>
+                        <div class="event-meta">
+                            <span><span class="icon">📅</span> ${formatDate(event.date)}</span>
+                            <span><span class="icon">📍</span> ${escapeHtml(event.venue)}</span>
+                            <span><span class="icon">👤</span> By ${escapeHtml(event.creator_name)}</span>
+                            <span><span class="icon">🎟️</span> ${event.registration_count || 0} registered</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = `
+                    <div class="no-events">
+                        <div class="icon">📭</div>
+                        <p>Events are loading...</p>
+                    </div>`;
+            }
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('en-US', {
+                weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit',
+            });
+        }
+
+        // Boot
+        updateNav();
+        loadStats();
+        loadPublicEvents();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Event Registrants — CampusConnect">
+    <title>Event Registrants — CampusConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .registrants-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            margin-bottom: 1.5rem;
+        }
+
+        .event-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .event-info-card h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .event-info-card .event-meta {
+            margin-bottom: 0;
+        }
+
+        .registrants-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+        }
+
+        .registrants-card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .count-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary-light);
+            border: 1px solid rgba(108, 99, 255, 0.25);
+        }
+
+        .loading-msg {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">C</span>
+            CampusConnect
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><button onclick="logout()" class="btn-nav-primary">Logout</button></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="registrants-page">
+
+            <a href="dashboard.html" class="btn btn-secondary btn-sm back-btn">← Back to Dashboard</a>
+
+            <!-- Event Info -->
+            <div class="event-info-card" id="eventInfo">
+                <p class="loading-msg">Loading event details...</p>
+            </div>
+
+            <!-- Registrants Table -->
+            <div class="registrants-card">
+                <h2>👥 Registered Students <span class="count-badge" id="regCount">0</span></h2>
+                <div class="table-wrapper">
+                    <table class="data-table" id="regTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Registered At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regBody"></tbody>
+                    </table>
+                </div>
+                <p class="no-registrations" id="noReg" style="display:none">No students have registered for this event
+                    yet.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 CampusConnect. Built with ❤️ for academic communities.</p>
+    </footer>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+        if (!token || !user || (user.role !== 'admin' && user.role !== 'faculty')) {
+            window.location.href = 'dashboard.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        function authHeaders() {
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            };
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('en-US', {
+                weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit',
+            });
+        }
+
+        // Get event ID from URL params
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get('id');
+
+        if (!eventId) {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Load event info
+        async function loadEvent() {
+            try {
+                const res = await fetch(`${API_BASE}/api/events/${eventId}`);
+                const event = await res.json();
+                if (!res.ok) throw new Error(event.message);
+
+                document.title = `${event.title} — Registrants — CampusConnect`;
+                document.getElementById('eventInfo').innerHTML = `
+                    <h1>${escapeHtml(event.title)}</h1>
+                    <p class="event-desc" style="color:var(--text-secondary);margin-bottom:1rem;">${escapeHtml(event.description || 'No description.')}</p>
+                    <div class="event-meta">
+                        <span><span class="icon">📅</span> ${formatDate(event.date)}</span>
+                        <span><span class="icon">📍</span> ${escapeHtml(event.venue)}</span>
+                        <span><span class="icon">👤</span> By ${escapeHtml(event.creator_name)}</span>
+                    </div>`;
+            } catch (err) {
+                document.getElementById('eventInfo').innerHTML =
+                    `<p class="loading-msg" style="color:var(--danger)">Failed to load event: ${err.message}</p>`;
+            }
+        }
+
+        // Load registrants
+        async function loadRegistrants() {
+            const tbody = document.getElementById('regBody');
+            const noReg = document.getElementById('noReg');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/events/${eventId}/registrations`, {
+                    headers: authHeaders(),
+                });
+                const regs = await res.json();
+                if (!res.ok) throw new Error(regs.message);
+
+                document.getElementById('regCount').textContent = regs.length;
+
+                if (regs.length === 0) {
+                    tbody.innerHTML = '';
+                    noReg.style.display = 'block';
+                    document.getElementById('regTable').style.display = 'none';
+                    return;
+                }
+
+                tbody.innerHTML = regs.map((r, i) => `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${escapeHtml(r.student_name)}</td>
+                        <td>${escapeHtml(r.student_email)}</td>
+                        <td>${formatDate(r.registered_at)}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                tbody.innerHTML = '';
+                noReg.textContent = `Failed to load registrants: ${err.message}`;
+                noReg.style.display = 'block';
+                document.getElementById('regTable').style.display = 'none';
+            }
+        }
+
+        loadEvent();
+        loadRegistrants();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CampusConnect Dashboard — Manage events and registrations.">
+    <title>Dashboard — CampusConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ── Navbar ── -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">C</span>
+            CampusConnect
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li>
+                <button onclick="logout()" class="btn-nav-primary" id="logoutBtn">Logout</button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ── Dashboard ── -->
+    <main class="main-content">
+        <div class="dashboard">
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1>
+                    Welcome, <span id="userName">User</span>
+                    <span class="role-badge" id="roleBadge"></span>
+                </h1>
+                <p id="dashboardSubtitle">Here's what's happening on campus</p>
+            </div>
+
+            <!-- Alert Area -->
+            <div class="alert alert-error" id="alertError"></div>
+            <div class="alert alert-success" id="alertSuccess"></div>
+
+            <!-- Create Event Section (Admin / Faculty only) -->
+            <section class="create-event-section" id="createEventSection" style="display:none">
+                <h2 class="section-title"><span class="icon">✨</span> Create New Event</h2>
+                <form id="createEventForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input type="text" id="eventTitle" class="form-control" placeholder="e.g. AI Workshop 2026"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventVenue">Venue</label>
+                            <input type="text" id="eventVenue" class="form-control" placeholder="e.g. Auditorium A"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDesc">Description</label>
+                        <textarea id="eventDesc" class="form-control" rows="3"
+                            placeholder="Describe the event..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Date & Time</label>
+                        <input type="datetime-local" id="eventDate" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-accent">🚀 Create Event</button>
+                </form>
+            </section>
+
+            <!-- Events Section -->
+            <section>
+                <h2 class="section-title"><span class="icon">📅</span> Upcoming Events</h2>
+                <div class="events-grid" id="eventsGrid">
+                    <div class="no-events">
+                        <div class="icon">📭</div>
+                        <p>Loading events...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Registrations Section (Student only) -->
+            <section class="my-registrations-section" id="myRegistrationsSection" style="display:none">
+                <h2 class="section-title"><span class="icon">🎟️</span> My Registrations</h2>
+                <div class="table-wrapper">
+                    <table class="data-table" id="myRegistrationsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                                <th>Organized By</th>
+                                <th>Registered At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myRegistrationsBody">
+                        </tbody>
+                    </table>
+                </div>
+                <p class="no-registrations" id="noMyRegistrations" style="display:none">You haven't registered for any
+                    events yet.</p>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <p>© 2026 CampusConnect. Built with ❤️ for academic communities.</p>
+    </footer>
+
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+    </script>
+</body>
+
+</html>
