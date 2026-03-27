@@ -1,6 +1,4 @@
-// ============================================================
-// CampusConnect — Express Server Entry Point
-// ============================================================
+
 
 import express  from 'express';
 import cors     from 'cors';
